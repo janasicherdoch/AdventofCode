@@ -25,7 +25,7 @@ def split_claim_into_int(claim):
 #create numpy array from integer claims
 fabrics_int=np.array(list(split_claim_into_int(claims) for claims in fabrics))
 
-print(fabrics_int[0:3])
+#print(fabrics_int[0:3])
 
 #determine size of fabric by finding x_min, x_max and y_min and y_max
 #find x min und max
@@ -46,7 +46,20 @@ y_min = min(y_values) #y_min=11
 #create array of zeros with size of fabric
 fabrics_overlap = np.zeros((y_max, x_max), int)
 
+#add one for every claim on inch of fabric and count the ones greater one to get the number of overlapping inches
+
+for line in range(len(fabrics_int)):
+    for i in range(fabrics_int[line,2], fabrics_int[line,2]+fabrics_int[line,4]):
+        for j in range(fabrics_int[line,1], fabrics_int[line,1]+fabrics_int[line,3]):
+            fabrics_overlap[i, j]+=1
+
+overlap = np.sum(fabrics_overlap>1)
+print(overlap)
+
+
+
 #create smaller fabric for test, size 8x8
+
 fabrics_testsize = np.zeros((8,8), int)
 fabrics_claims_test = np.array([[1, 1, 3, 4, 4],
                                 [2, 3, 1, 4, 4],
@@ -57,10 +70,11 @@ for line in range(len(fabrics_claims_test)):
         for j in range(fabrics_claims_test[line,1], fabrics_claims_test[line,1]+fabrics_claims_test[line,3]):
             fabrics_testsize[i, j]+=1
 
-overlap = np.sum(fabrics_testsize>1)
+overlap_test = np.sum(fabrics_testsize>1)
 
 
 print(fabrics_testsize)
 print(fabrics_claims_test)
-print(overlap)
+print(overlap_test)
+print(len(fabrics_int))
 
